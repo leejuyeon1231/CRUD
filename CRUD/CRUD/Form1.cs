@@ -92,7 +92,6 @@ namespace CRUD
             MySqlConnection conn = DbConn();
 
             DataSet ds = new DataSet();
-            addList.Clear();
 
             string sql = "select * from student;";
             MySqlDataAdapter adapter = new MySqlDataAdapter();
@@ -104,25 +103,42 @@ namespace CRUD
             int i = 0;
             RowCnt = ds.Tables[0].Rows.Count;
             dgv1.RowCount = ds.Tables[0].Rows.Count + 1;
-            
+
+            Stu st = Stu.CreateNewStudent();
 
             foreach (DataRow s in ds.Tables[0].Rows)
             {
+
                 // 학번
                 if (s["no"] != System.DBNull.Value)
-                    dgv1.Rows[i].Cells["no"].Value = s["no"].ToString();
+                {
+                    st.No = s["no"].ToString();
+                    dgv1.Rows[i].Cells["no"].Value = st.No;
+                }
                 //학년
                 if (s["grade"] != System.DBNull.Value)
-                    dgv1.Rows[i].Cells["grade"].Value = s["grade"].ToString();
+                {
+                    st.Grade = s["grade"].ToString();
+                    dgv1.Rows[i].Cells["grade"].Value = st.Grade;
+                }
                 //반
                 if (s["cclass"] != System.DBNull.Value)
-                    dgv1.Rows[i].Cells["cclass"].Value = s["cclass"].ToString();
+                {
+                    st.Cclass = s["cclass"].ToString();
+                    dgv1.Rows[i].Cells["cclass"].Value = st.Cclass;
+                }
                 //이름
                 if (s["name"] != System.DBNull.Value)
-                    dgv1.Rows[i].Cells["name"].Value = s["name"].ToString();
+                {
+                    st.Name = s["name"].ToString();
+                    dgv1.Rows[i].Cells["name"].Value = st.Name;
+                }
                 //점수
                 if (s["score"] != System.DBNull.Value)
-                    dgv1.Rows[i].Cells["score"].Value = s["score"].ToString();
+                {
+                    st.Score = s["score"].ToString();
+                    dgv1.Rows[i].Cells["score"].Value = st.Score;
+                }
                 i++;
             }
             sw = true;
@@ -133,7 +149,8 @@ namespace CRUD
         {
             MySqlConnection conn = DbConn();
             DataSet ds = new DataSet();
-            addList.Clear();
+
+            Stu st = Stu.CreateNewStudent();
 
             try
             {
@@ -150,16 +167,16 @@ namespace CRUD
 
                 sw = false;
                
-                addList.Add(dgv1.CurrentRow.Cells["no"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["grade"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["cclass"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["name"].Value.ToString());
+                st.No = dgv1.CurrentRow.Cells["no"].Value.ToString();
+                st.Grade = dgv1.CurrentRow.Cells["grade"].Value.ToString();
+                st.Cclass = dgv1.CurrentRow.Cells["cclass"].Value.ToString();
+                st.Name = dgv1.CurrentRow.Cells["name"].Value.ToString();
                 if (dgv1.CurrentRow.Cells["score"].Value == null)
-                    addList.Add(" ");
+                    st.Score = " ";
                 else
-                    addList.Add(dgv1.CurrentRow.Cells["score"].Value.ToString());
+                    st.Score = dgv1.CurrentRow.Cells["score"].Value.ToString();
 
-                string sql = "insert into student values(" + addList[0] + "," + addList[1] + "," + addList[2] + ",'" + addList[3] + "','" + addList[4] + "');";
+                string sql = "insert into student values(" + st.No + "," + st.Grade + "," + st.Cclass + ",'" + st.Name + "','" + st.Score + "');";
                 MySqlDataAdapter adapter = new MySqlDataAdapter();
                 adapter.SelectCommand = new MySqlCommand(sql, conn);
                 adapter.Fill(ds);
@@ -182,6 +199,7 @@ namespace CRUD
             MySqlConnection conn = DbConn();
             DataSet ds = new DataSet();
             addList.Clear();
+            Stu st = Stu.CreateNewStudent();
 
             try
             {
@@ -197,21 +215,21 @@ namespace CRUD
                 }
                 sw = false;
                 
-                addList.Add(dgv1.CurrentRow.Cells["no"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["grade"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["cclass"].Value.ToString());
-                addList.Add(dgv1.CurrentRow.Cells["name"].Value.ToString());
+                st.No = dgv1.CurrentRow.Cells["no"].Value.ToString();
+                st.Grade = dgv1.CurrentRow.Cells["grade"].Value.ToString();
+                st.Cclass = dgv1.CurrentRow.Cells["cclass"].Value.ToString();
+                st.Name = dgv1.CurrentRow.Cells["name"].Value.ToString();
                 if (dgv1.CurrentRow.Cells["score"].Value == null)
-                    addList.Add(" ");
+                    st.Score = " ";
                 else
-                    addList.Add(dgv1.CurrentRow.Cells["score"].Value.ToString());
+                    st.Score = dgv1.CurrentRow.Cells["score"].Value.ToString();
 
-                string sql = "update student set no = " + addList[0] +
-                                                 ",grade = " + addList[1] +
-                                                 ",cclass =" + addList[2] +
-                                                 ",name = '" + addList[3] + "' " +
-                                                 ",score = '" + addList[4] + "' " +
-                                                 "where no = " + addList[0] + ";";
+                string sql = "update student set no = " + st.No +
+                                                 ",grade = " + st.Grade +
+                                                 ",cclass =" + st.Cclass +
+                                                 ",name = '" + st.Name + "' " +
+                                                 ",score = '" + st.Score + "' " +
+                                                 "where no = " + st.No + ";";
                 MySqlDataAdapter adapter = new MySqlDataAdapter();
                 adapter.SelectCommand = new MySqlCommand(sql, conn);
                 adapter.Fill(ds);
@@ -324,7 +342,7 @@ namespace CRUD
         }
 
         // This is the public factory method.  
-        public static Stu CreateNewCustomer()
+        public static Stu CreateNewStudent()
         {
             return new Stu();
         }
