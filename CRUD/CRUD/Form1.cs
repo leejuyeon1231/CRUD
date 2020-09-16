@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using MySql.Data.Common;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.CompilerServices;
 
 namespace CRUD
 {
@@ -291,6 +292,125 @@ namespace CRUD
                         e.Cancel = true;
                     }
                     return;
+                }
+            }
+        }
+    }
+
+    public class Stu : INotifyPropertyChanged
+    {
+        // These fields hold the values for the public properties.  
+        
+        private string noValue = String.Empty;
+        private string nameValue = String.Empty;
+        private string cclassValue = String.Empty;
+        private string gradeValue = String.Empty;
+        private string scoreValue = String.Empty;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.  
+        // The CallerMemberName attribute that is applied to the optional propertyName  
+        // parameter causes the property name of the caller to be substituted as an argument.  
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        // The constructor is private to enforce the factory pattern.  
+        private Stu()
+        {
+            
+        }
+
+        // This is the public factory method.  
+        public static Stu CreateNewCustomer()
+        {
+            return new Stu();
+        }
+
+        // This property represents an ID, suitable  
+        // for use as a primary key in a database.  
+       
+
+        public string No
+        {
+            get
+            {
+                return this.noValue;
+            }
+
+            set
+            {
+                if (value != this.noValue)
+                {
+                    this.noValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Grade
+        {
+            get
+            {
+                return this.gradeValue;
+            }
+
+            set
+            {
+                if (value != this.gradeValue)
+                {
+                    this.gradeValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Cclass
+        {
+            get
+            {
+                return this.cclassValue;
+            }
+
+            set
+            {
+                if (value != this.cclassValue)
+                {
+                    this.cclassValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return this.nameValue;
+            }
+
+            set
+            {
+                if (value != this.nameValue)
+                {
+                    this.nameValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Score
+        {
+            get
+            {
+                return this.scoreValue;
+            }
+
+            set
+            {
+                if (value != this.scoreValue)
+                {
+                    this.scoreValue = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
